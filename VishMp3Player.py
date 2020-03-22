@@ -11,8 +11,16 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import pygame
 
 
+isMusicPlaying = "False"
+
+
+
 
 class Ui_MainWindow(object):
+
+    isMusicPlaying = "False"
+
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(300, 700)
@@ -67,6 +75,8 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "VishMP3 Player"))
@@ -80,13 +90,12 @@ class Ui_MainWindow(object):
 
     def playButton_onClicked(self):
         print("play button clicked")
-
+        
         try:
             initMixer()
             filename = 'D:\\bumbro.mp3'
             playmusic(filename)
         except KeyboardInterrupt:   # to stop playing, press "ctrl-c"
-            stopmusic()
             print("\nPlay Stopped by user")
         except Exception:
             print("unknown error")
@@ -94,12 +103,14 @@ class Ui_MainWindow(object):
     def pauseButton_onClicked(self):
         print("pause button clicked")
         try:
-            stopmusic()
-            print("\nPlay Stopped by user")
+            pauseMusic()
+                
+                
         except KeyboardInterrupt:   # to stop playing, press "ctrl-c"
-            stopmusic()
-            print("\nPlay Stopped by user")
-        except Exception:
+            pauseMusic()
+            print("\nPlay paused by user")
+        except Exception as e:
+            #print("Exception:"+e.message())
             print("unknown error")
 
 
@@ -120,15 +131,24 @@ def playsound(soundfile):
         print("Playing...")
         clock.tick(1000)
 
+def pauseMusic():
+    pygame.mixer.music.pause()
+    
+def unPauseMusic():
+    pygame.mixer.unpause()
+
 def playmusic(soundfile):
     """Stream music with mixer.music module in blocking manner.
        This will stream the sound from disk while playing.
     """
+    #print("isMusicPlaying:"+isMusicPlaying)
+
     pygame.init()
     pygame.mixer.init()
     clock = pygame.time.Clock()
     pygame.mixer.music.load(soundfile)
     pygame.mixer.music.play()
+    isMusicPlaying = "True" 
     """while pygame.mixer.music.get_busy():
         print("Playing...")
         clock.tick(1000)
