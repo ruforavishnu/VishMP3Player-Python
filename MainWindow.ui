@@ -40,7 +40,7 @@
      <string>Pause</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="stopButton">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -53,7 +53,7 @@
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="nextTrackButton">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -66,7 +66,7 @@
      <string>Next Track</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_5">
+   <widget class="QPushButton" name="prevTrackButton">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -79,7 +79,7 @@
      <string>Prev Track</string>
     </property>
    </widget>
-   <widget class="QListView" name="listView">
+   <widget class="QListView" name="playlistListView">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -89,7 +89,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_6">
+   <widget class="QPushButton" name="addMP3ToPlaylistButton">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -102,7 +102,7 @@
      <string>Add Mp3</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_7">
+   <widget class="QPushButton" name="removeMP3FromPlaylistButton">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -115,7 +115,7 @@
      <string>Remove Mp3</string>
     </property>
    </widget>
-   <widget class="QSlider" name="horizontalSlider">
+   <widget class="QSlider" name="timeSeekHorizontalSlider">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -128,7 +128,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QSlider" name="verticalSlider">
+   <widget class="QSlider" name="volumeVerticalSlider">
     <property name="geometry">
      <rect>
       <x>250</x>
