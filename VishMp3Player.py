@@ -95,6 +95,7 @@ class Ui_MainWindow(object):
             initMixer()
             filename = 'D:\\bumbro.mp3'
             playmusic(filename)
+            self.isMusicPlaying = "True"
         except KeyboardInterrupt:   # to stop playing, press "ctrl-c"
             print("\nPlay Stopped by user")
         except Exception:
@@ -103,15 +104,27 @@ class Ui_MainWindow(object):
     def pauseButton_onClicked(self):
         print("pause button clicked")
         try:
-            pauseMusic()
-                
+            if(self.isMusicPlaying is None):
+                return
+
+            if(self.isMusicPlaying == "True"):
+                print("Value of isMusicPlaying:"+self.isMusicPlaying)
+                pauseMusic()
+                self.isMusicPlaying = "False"
+
+            elif(self.isMusicPlaying == "False"):
+                print("Value of isMusicPlaying:"+self.isMusicPlaying)
+                unPauseMusic()
+                self.isMusicPlaying = "True"
+
+
                 
         except KeyboardInterrupt:   # to stop playing, press "ctrl-c"
-            pauseMusic()
-            print("\nPlay paused by user")
+            #pauseMusic()
+            print("\nException:keyboard interrupt")
         except Exception as e:
             #print("Exception:"+e.message())
-            print("unknown error")
+            print("Exception occured:"+e)
 
 
 #############################################################
@@ -133,9 +146,11 @@ def playsound(soundfile):
 
 def pauseMusic():
     pygame.mixer.music.pause()
+    print("pygame pauseMusic function invoked")
     
 def unPauseMusic():
-    pygame.mixer.unpause()
+    pygame.mixer.music.unpause()
+    print("pygame unPauseMusic function invoked")
 
 def playmusic(soundfile):
     """Stream music with mixer.music module in blocking manner.
