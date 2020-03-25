@@ -9,6 +9,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pygame
+import threading
+
+
 
 
 
@@ -59,7 +62,7 @@ class Ui_MainWindow(object):
         self.timeSeekHorizontalSlider.setGeometry(QtCore.QRect(30, 290, 231, 22))
         self.timeSeekHorizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.timeSeekHorizontalSlider.setObjectName("timeSeekHorizontalSlider")
-  #      self.timeSeekHorizontalSlider.valueChanged.connect(self.timeSeekHorizontalSlider_onValueChanged)
+        self.timeSeekHorizontalSlider.valueChanged.connect(self.timeSeekHorizontalSlider_onValueChanged)
   
         self.volumeVerticalSlider = QtWidgets.QSlider(self.centralwidget)
         self.volumeVerticalSlider.setGeometry(QtCore.QRect(250, 20, 22, 91))
@@ -94,6 +97,13 @@ class Ui_MainWindow(object):
         offsetValue = self.volumeVerticalSlider.value()
         print("volume offset value:"+str(offsetValue))
         changeCurrentVolumeToValue(offsetValue)
+
+
+    def timeSeekHorizontalSlider_onValueChanged(self):
+        offsetValue = self.timeSeekHorizontalSlider.value()
+        print("timeSeeker moved:"+str(offsetValue))
+
+        
 
 
 
@@ -183,10 +193,26 @@ def playmusic(soundfile):
     pygame.mixer.music.load(soundfile)
     pygame.mixer.music.play()
     isMusicPlaying = "True" 
+
+
+    oneSecondTimer = threading.Timer(1.0, updateFieldsEverySecond )
+    oneSecondTimer.start()
+    print("starting oneSecondTimer")
+
+#    threading.Timer(1.0, updateFieldsEverySecond).start()
     """while pygame.mixer.music.get_busy():
         print("Playing...")
         clock.tick(1000)
        """ 
+
+def updateFieldsEverySecond():
+    print("inside updateFieldsEverySecond function")
+    if(pygame.mixer.music.get_busy()):
+            print("mp3 being played")
+        
+    # if
+    # currentPlayTime = pygame.mixer.music.get_pos()
+    # print("current Playtime:"+str(currentPlayTime))
 
 def stopmusic():
     """stop currently playing music"""
@@ -194,7 +220,7 @@ def stopmusic():
 
 def changeCurrentVolumeToValue(reqdVolumeValue):
     volumeValue = reqdVolumeValue/100.0
-    print("volume value:"+str(volumeValue))
+#    print("volume value:"+str(volumeValue))
     pygame.mixer.music.set_volume(volumeValue)
 
 def getmixerargs():
@@ -222,4 +248,9 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+    print("before sys.exit()")
+    
     sys.exit(app.exec_())
+
+
+    print("after sys.exit function invoked")
