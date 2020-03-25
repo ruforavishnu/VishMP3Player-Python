@@ -1,4 +1,4 @@
-##VishMP3Player - An MP3 Player built using Python
+## VishMP3Player - An MP3 Player built using Python
 
 Program : An MP3 Player built using Python Programming language.
 
