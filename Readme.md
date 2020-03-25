@@ -6,7 +6,7 @@ Libraries used : Pygame - for various music/mp3 related capabilities
 
 Author: Vishnu Ajit
 
-Author GitHub URL : github.com/ruforavishnu
+Author GitHub URL : https://github.com/ruforavishnu/
 
 Total Time Spent on Project: 6.0 hours
 
