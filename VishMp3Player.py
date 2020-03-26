@@ -9,8 +9,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pygame
-import threading
-
+import threading, _thread
+from mutagen.mp3 import MP3
+#import stackprinter
 
 
 
@@ -46,18 +47,23 @@ class Ui_MainWindow(object):
         self.nextTrackButton = QtWidgets.QPushButton(self.centralwidget)
         self.nextTrackButton.setGeometry(QtCore.QRect(20, 160, 93, 28))
         self.nextTrackButton.setObjectName("nextTrackButton")
+
         self.prevTrackButton = QtWidgets.QPushButton(self.centralwidget)
         self.prevTrackButton.setGeometry(QtCore.QRect(20, 210, 93, 28))
         self.prevTrackButton.setObjectName("prevTrackButton")
+
         self.playlistListView = QtWidgets.QListView(self.centralwidget)
         self.playlistListView.setGeometry(QtCore.QRect(20, 340, 256, 261))
         self.playlistListView.setObjectName("playlistListView")
+
         self.addMP3ToPlaylistButton = QtWidgets.QPushButton(self.centralwidget)
         self.addMP3ToPlaylistButton.setGeometry(QtCore.QRect(30, 620, 93, 28))
         self.addMP3ToPlaylistButton.setObjectName("addMP3ToPlaylistButton")
+
         self.removeMP3FromPlaylistButton = QtWidgets.QPushButton(self.centralwidget)
         self.removeMP3FromPlaylistButton.setGeometry(QtCore.QRect(160, 620, 93, 28))
         self.removeMP3FromPlaylistButton.setObjectName("removeMP3FromPlaylistButton")
+
         self.timeSeekHorizontalSlider = QtWidgets.QSlider(self.centralwidget)
         self.timeSeekHorizontalSlider.setGeometry(QtCore.QRect(30, 290, 231, 22))
         self.timeSeekHorizontalSlider.setOrientation(QtCore.Qt.Horizontal)
@@ -104,7 +110,8 @@ class Ui_MainWindow(object):
         print("timeSeeker moved:"+str(offsetValue))
 
         
-
+    def updateTimeSeekHorizontalSliderAutomatically():
+            print("updating TimeSeekHorizontalSlider automatically")
 
 
     def playButton_onClicked(self):
@@ -153,8 +160,6 @@ class Ui_MainWindow(object):
         except Exception as e:
             print("Exception occured while trying to invoke stopmusic() function")
 
-    #############################################################
-
 
 
 def playsound(soundfile):
@@ -185,7 +190,6 @@ def playmusic(soundfile):
     """Stream music with mixer.music module in blocking manner.
        This will stream the sound from disk while playing.
     """
-    #print("isMusicPlaying:"+isMusicPlaying)
 
     pygame.init()
     pygame.mixer.init()
@@ -193,26 +197,20 @@ def playmusic(soundfile):
     pygame.mixer.music.load(soundfile)
     pygame.mixer.music.play()
     isMusicPlaying = "True" 
+    print("soundfile:"+ soundfile)
 
+    try:
 
-    oneSecondTimer = threading.Timer(1.0, updateFieldsEverySecond )
-    oneSecondTimer.start()
-    print("starting oneSecondTimer")
+        _thread.start_new_thread(updateFieldsEverySecond, ("Thread1", 1,))
 
-#    threading.Timer(1.0, updateFieldsEverySecond).start()
-    """while pygame.mixer.music.get_busy():
-        print("Playing...")
-        clock.tick(1000)
-       """ 
+    except Exception as e:
+        print("Encountered Exception: Unable to start thread")
+        print("Exception message:"+e.message())
+        print("Exception arguments:"+ e.args)
 
-def updateFieldsEverySecond():
+def updateFieldsEverySecond(threadName, delay):
     print("inside updateFieldsEverySecond function")
-    if(pygame.mixer.music.get_busy()):
-            print("mp3 being played")
-        
-    # if
-    # currentPlayTime = pygame.mixer.music.get_pos()
-    # print("current Playtime:"+str(currentPlayTime))
+
 
 def stopmusic():
     """stop currently playing music"""
@@ -220,12 +218,12 @@ def stopmusic():
 
 def changeCurrentVolumeToValue(reqdVolumeValue):
     volumeValue = reqdVolumeValue/100.0
-#    print("volume value:"+str(volumeValue))
     pygame.mixer.music.set_volume(volumeValue)
 
 def getmixerargs():
     pygame.mixer.init()
     freq, size, chan = pygame.mixer.get_init()
+
     return freq, size, chan
 
 
@@ -248,9 +246,5 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
-    print("before sys.exit()")
-    
     sys.exit(app.exec_())
 
-
-    print("after sys.exit function invoked")
