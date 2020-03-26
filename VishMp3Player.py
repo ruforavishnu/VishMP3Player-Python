@@ -201,15 +201,18 @@ def playmusic(soundfile):
 
     try:
 
-        _thread.start_new_thread(updateFieldsEverySecond, ("Thread1", 1,))
+        _thread.start_new_thread(updateFieldsEverySecond, ("Thread1", 1,), timeSeekHorizontalSlider)
 
     except Exception as e:
         print("Encountered Exception: Unable to start thread")
         print("Exception message:"+e.message())
-        print("Exception arguments:"+ e.args)
+        print("Exception arguments:"+ e.args())
 
-def updateFieldsEverySecond(threadName, delay):
+def updateFieldsEverySecond(threadName, delay, component):
     print("inside updateFieldsEverySecond function")
+    count = 0;
+    while True:
+        component.setValue(count)
 
 
 def stopmusic():
