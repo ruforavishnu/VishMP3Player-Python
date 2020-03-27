@@ -10,16 +10,23 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pygame
 import threading, _thread
-from mutagen.mp3 import MP3
+#from mutagen.mp3 import MP3
 #import stackprinter
 
 
+
+timeSeekerSliderValue = 0
+globalComponentTimeSeeker = None
 
 
 
 class Ui_MainWindow(object):
 
     isMusicPlaying = "False"
+
+    def getTimeSeekerComponent(self):
+        return self.timeSeekHorizontalSlider
+
 
 
     def setupUi(self, MainWindow):
@@ -69,7 +76,9 @@ class Ui_MainWindow(object):
         self.timeSeekHorizontalSlider.setOrientation(QtCore.Qt.Horizontal)
         self.timeSeekHorizontalSlider.setObjectName("timeSeekHorizontalSlider")
         self.timeSeekHorizontalSlider.valueChanged.connect(self.timeSeekHorizontalSlider_onValueChanged)
-  
+        global globalComponentTimeSeeker
+        globalComponentTimeSeeker = self.timeSeekHorizontalSlider
+
         self.volumeVerticalSlider = QtWidgets.QSlider(self.centralwidget)
         self.volumeVerticalSlider.setGeometry(QtCore.QRect(250, 20, 22, 91))
         self.volumeVerticalSlider.setOrientation(QtCore.Qt.Vertical)
@@ -208,11 +217,10 @@ def playmusic(soundfile):
         print("Exception message:"+e.message())
         print("Exception arguments:"+ e.args())
 
-def updateFieldsEverySecond(threadName, delay, component):
+def updateFieldsEverySecond(threadName, delay):
     print("inside updateFieldsEverySecond function")
     count = 0;
-    while True:
-        component.setValue(count)
+
 
 
 def stopmusic():
@@ -241,6 +249,18 @@ def initMixer():
 ##############################################################
 
 
+def autoUpdateMethod(threadName, delay):
+    print("inside autoupdate method")
+    count = 0
+    while True:
+        try:    
+            offsetValue = globalComponentTimeSeeker.value()
+            print("value of timeseeker:"+str(offsetValue))
+        except:
+            print("Exception raised when trying to access timeSeeker object")
+#        offsetValue = self.timeSeekHorizontalSlider.value()
+        
+
 
 if __name__ == "__main__":
     import sys
@@ -249,5 +269,16 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
+    obj = ui.getTimeSeekerComponent()
+    offsetValue = obj.value()
+    #global timeSeekerSliderValue
+
+    #timeSeekerSliderValue = offsetValue
+
+    print("time seeker offset value:"+str(offsetValue))
+
+    _thread.start_new_thread(autoUpdateMethod, ("AutoThread1", 1,))
+
+
     sys.exit(app.exec_())
 
