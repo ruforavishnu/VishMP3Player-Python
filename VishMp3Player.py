@@ -17,6 +17,7 @@ import threading, _thread
 
 timeSeekerSliderValue = 0
 globalComponentTimeSeeker = None
+globalSoundLength = -1
 
 
 
@@ -209,9 +210,14 @@ def playmusic(soundfile):
     pygame.mixer.music.play()
     isMusicPlaying = "True" 
     print("soundfile:"+ soundfile)
-
+    
     try:
-
+        from mutagen.mp3 import MP3
+        audio = MP3(soundfile)
+        global globalSoundLength
+        globalSoundLength = audio.info.length
+        print("sound length:"+str(globalSoundLength))
+        
         _thread.start_new_thread(updateFieldsEverySecond, ("Thread1", 1,), timeSeekHorizontalSlider)
 
     except Exception as e:
@@ -257,12 +263,11 @@ def autoUpdateMethod(threadName, delay):
     while True:
         try:    
             offsetValue = globalComponentTimeSeeker.value()
-            #print("value of timeseeker:"+str(offsetValue))
             songDuration = pygame.mixer.music.get_pos()
-            print("songDuration:"+str(songDuration))
-
-            offsetDuration = songDuration/1000.0
-            globalComponentTimeSeeker.setValue(offsetDuration)
+            timeSeekerOffsetValue = 100.0/globalSoundLength
+            reqdTimeSeekerValue = timeSeekerOffsetValue * songDuration
+            reqdTimeSeekerValue = reqdTimeSeekerValue/1000.0 # converting milliseconds to seconds
+            globalComponentTimeSeeker.setValue(reqdTimeSeekerValue)
 
         except:
             print("Exception raised when trying to access timeSeeker object")
