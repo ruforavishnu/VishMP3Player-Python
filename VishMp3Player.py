@@ -117,6 +117,8 @@ class Ui_MainWindow(object):
     def timeSeekHorizontalSlider_onValueChanged(self):
         offsetValue = self.timeSeekHorizontalSlider.value()
         print("timeSeeker moved:"+str(offsetValue))
+        pygame.mixer.music.rewind
+
 
         
     def updateTimeSeekHorizontalSliderAutomatically():
@@ -255,7 +257,13 @@ def autoUpdateMethod(threadName, delay):
     while True:
         try:    
             offsetValue = globalComponentTimeSeeker.value()
-            print("value of timeseeker:"+str(offsetValue))
+            #print("value of timeseeker:"+str(offsetValue))
+            songDuration = pygame.mixer.music.get_pos()
+            print("songDuration:"+str(songDuration))
+
+            offsetDuration = songDuration/1000.0
+            globalComponentTimeSeeker.setValue(offsetDuration)
+
         except:
             print("Exception raised when trying to access timeSeeker object")
 #        offsetValue = self.timeSeekHorizontalSlider.value()
