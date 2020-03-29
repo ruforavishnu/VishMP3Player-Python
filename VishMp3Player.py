@@ -109,6 +109,14 @@ class Ui_MainWindow(object):
         self.addMP3ToPlaylistButton.setText(_translate("MainWindow", "Add Mp3"))
         self.removeMP3FromPlaylistButton.setText(_translate("MainWindow", "Remove Mp3"))
 
+        self.addMP3ToPlaylistButton.clicked.connect(self.addMP3Button_onClicked)
+
+
+    def addMP3Button_onClicked(self):
+        print("add mp3 button clicked")
+        fname = QFileDialog.getOpenFileName(self, 'Open File', 'c:\\', "MP3 files (*.mp3)")
+        
+
     def volumeVerticalSlider_onValueChanged(self):
         offsetValue = self.volumeVerticalSlider.value()
         print("volume offset value:"+str(offsetValue))
