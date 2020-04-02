@@ -8,10 +8,13 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog
 import pygame
 import threading, _thread
 #from mutagen.mp3 import MP3
 #import stackprinter
+from VishFileDialog import VishApp
+
 
 
 
@@ -114,7 +117,25 @@ class Ui_MainWindow(object):
 
     def addMP3Button_onClicked(self):
         print("add mp3 button clicked")
-        fname = QFileDialog.getOpenFileName(self, 'Open File', 'c:\\', "MP3 files (*.mp3)")
+        #fname = QFileDialog.getOpenFileName(self, 'Open File', 'c:\\', "MP3 files (*.mp3)")
+        self.openFileNameDialog()
+
+
+    def openFileNameDialog(self):
+        print("inside App:openFileNameDialog() method")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        dialog = QtWidgets.QFileDialog()
+
+        fileName, _ = QFileDialog.getOpenFileName(dialog, "Add Mp3 to playlist", "", "All Files(*);; MP3 Files (*.mp3)", options=options)
+        #MainWindow = QtWidgets.QMainWindow()
+        
+        #fileName = QFileDialog.getOpenFileName(dialog, "Open File", "D:\\")
+
+
+        if fileName:
+            print("file selected:"+fileName)
+
         
 
     def volumeVerticalSlider_onValueChanged(self):
@@ -239,6 +260,7 @@ def updateFieldsEverySecond(threadName, delay):
 
 
 
+
 def stopmusic():
     """stop currently playing music"""
     pygame.mixer.music.stop()
@@ -286,7 +308,10 @@ def autoUpdateMethod(threadName, delay):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+
+
     MainWindow = QtWidgets.QMainWindow()
+    
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()

@@ -8,6 +8,6 @@ Author: Vishnu Ajit
 
 Author GitHub URL : https://github.com/ruforavishnu/
 
-Total Time Spent on Project: 9hours : 25 mins
+Total Time Spent on Project: 10hours : 5 mins
 
-Total time Spent as of date: 31st March, 2020
+Total time Spent as of date: April 2, 2020
