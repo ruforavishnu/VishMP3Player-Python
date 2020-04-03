@@ -125,13 +125,9 @@ class Ui_MainWindow(object):
         print("inside App:openFileNameDialog() method")
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
+
         dialog = QtWidgets.QFileDialog()
-
         fileName, _ = QFileDialog.getOpenFileName(dialog, "Add Mp3 to playlist", "", "All Files(*);; MP3 Files (*.mp3)", options=options)
-        #MainWindow = QtWidgets.QMainWindow()
-        
-        #fileName = QFileDialog.getOpenFileName(dialog, "Open File", "D:\\")
-
 
         if fileName:
             print("file selected:"+fileName)
@@ -290,17 +286,28 @@ def initMixer():
 def autoUpdateMethod(threadName, delay):
     print("inside autoupdate method")
     count = 0
+    print("globalComponentTimeSeeker:"+str(globalComponentTimeSeeker.value()) )
+    if globalComponentTimeSeeker == None:
+        print("time seeker is none")
+        return
+    if(pygame.mixer.get_init()==None):
+        print("pygame's mixer is not initialized")
+        return
+
     while True:
         try:    
             offsetValue = globalComponentTimeSeeker.value()
+
             songDuration = pygame.mixer.music.get_pos()
             timeSeekerOffsetValue = 100.0/globalSoundLength
             reqdTimeSeekerValue = timeSeekerOffsetValue * songDuration
             reqdTimeSeekerValue = reqdTimeSeekerValue/1000.0 # converting milliseconds to seconds
             globalComponentTimeSeeker.setValue(reqdTimeSeekerValue)
 
-        except:
+        except Exception as exc:
             print("Exception raised when trying to access timeSeeker object")
+            print("Exception :"+ format(exc))
+            print("Exception reason:"+ str(sys.exc_info()[0]))            
 #        offsetValue = self.timeSeekHorizontalSlider.value()
         
 
