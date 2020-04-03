@@ -87,7 +87,9 @@ class Ui_MainWindow(object):
         self.volumeVerticalSlider.setGeometry(QtCore.QRect(250, 20, 22, 91))
         self.volumeVerticalSlider.setOrientation(QtCore.Qt.Vertical)
         self.volumeVerticalSlider.setObjectName("volumeVerticalSlider")
+        #self.volumeVerticalSlider.setValue(0.55)
         self.volumeVerticalSlider.valueChanged.connect(self.volumeVerticalSlider_onValueChanged)
+        
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -235,7 +237,7 @@ def playmusic(soundfile):
     pygame.mixer.music.play()
     isMusicPlaying = "True" 
     print("soundfile:"+ soundfile)
-    
+
     try:
         from mutagen.mp3 import MP3
         audio = MP3(soundfile)
@@ -243,18 +245,11 @@ def playmusic(soundfile):
         globalSoundLength = audio.info.length
         print("sound length:"+str(globalSoundLength))
         
-        _thread.start_new_thread(updateFieldsEverySecond, ("Thread1", 1,), timeSeekHorizontalSlider)
 
     except Exception as e:
         print("Encountered Exception: Unable to start thread")
         print("Exception message:"+e.message())
         print("Exception arguments:"+ e.args())
-
-def updateFieldsEverySecond(threadName, delay):
-    print("inside updateFieldsEverySecond function")
-    count = 0;
-
-
 
 
 def stopmusic():
@@ -263,6 +258,7 @@ def stopmusic():
 
 def changeCurrentVolumeToValue(reqdVolumeValue):
     volumeValue = reqdVolumeValue/100.0
+    print("volume value changed to :"+str(volumeValue))
     pygame.mixer.music.set_volume(volumeValue)
 
 def getmixerargs():
@@ -288,16 +284,16 @@ def autoUpdateMethod(threadName, delay):
     count = 0
     print("globalComponentTimeSeeker:"+str(globalComponentTimeSeeker.value()) )
     if globalComponentTimeSeeker == None:
-        print("time seeker is none")
-        return
+        print("time seeker is none,exiting from method")
+        
+
     if(pygame.mixer.get_init()==None):
-        print("pygame's mixer is not initialized")
-        return
+        print("pygame's mixer is not initialized, exiting from method")
+        
 
     while True:
         try:    
             offsetValue = globalComponentTimeSeeker.value()
-
             songDuration = pygame.mixer.music.get_pos()
             timeSeekerOffsetValue = 100.0/globalSoundLength
             reqdTimeSeekerValue = timeSeekerOffsetValue * songDuration
@@ -309,7 +305,7 @@ def autoUpdateMethod(threadName, delay):
             print("Exception :"+ format(exc))
             print("Exception reason:"+ str(sys.exc_info()[0]))            
 #        offsetValue = self.timeSeekHorizontalSlider.value()
-        
+            
 
 
 if __name__ == "__main__":
@@ -327,8 +323,6 @@ if __name__ == "__main__":
     #global timeSeekerSliderValue
 
     #timeSeekerSliderValue = offsetValue
-
-    print("time seeker offset value:"+str(offsetValue))
 
     _thread.start_new_thread(autoUpdateMethod, ("AutoThread1", 1,))
 

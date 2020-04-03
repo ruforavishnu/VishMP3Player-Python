@@ -1,1 +1,0 @@
-class MyWidgets(QtWidgets.QWidget):
