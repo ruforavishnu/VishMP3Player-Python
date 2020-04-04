@@ -14,7 +14,7 @@ import threading, _thread
 #from mutagen.mp3 import MP3
 #import stackprinter
 from VishFileDialog import VishApp
-
+import os
 
 
 
@@ -137,7 +137,8 @@ class Ui_MainWindow(object):
 
         if fileName:
             print("file selected:"+fileName)
-            self.playlistListView.addItem(fileName)            
+            songName = os.path.basename(fileName)
+            self.playlistListView.addItem(songName)            
         
 
     def volumeVerticalSlider_onValueChanged(self):
