@@ -63,9 +63,12 @@ class Ui_MainWindow(object):
         self.prevTrackButton.setGeometry(QtCore.QRect(20, 210, 93, 28))
         self.prevTrackButton.setObjectName("prevTrackButton")
 
-        self.playlistListView = QtWidgets.QListView(self.centralwidget)
+        self.playlistListView = QtWidgets.QListWidget(self.centralwidget)
         self.playlistListView.setGeometry(QtCore.QRect(20, 340, 256, 261))
         self.playlistListView.setObjectName("playlistListView")
+
+
+
 
         self.addMP3ToPlaylistButton = QtWidgets.QPushButton(self.centralwidget)
         self.addMP3ToPlaylistButton.setGeometry(QtCore.QRect(30, 620, 93, 28))
@@ -134,7 +137,7 @@ class Ui_MainWindow(object):
 
         if fileName:
             print("file selected:"+fileName)
-
+            self.playlistListView.addItem(fileName)            
         
 
     def volumeVerticalSlider_onValueChanged(self):
