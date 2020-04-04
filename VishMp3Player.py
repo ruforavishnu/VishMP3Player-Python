@@ -70,6 +70,8 @@ class Ui_MainWindow(object):
         self.addMP3ToPlaylistButton = QtWidgets.QPushButton(self.centralwidget)
         self.addMP3ToPlaylistButton.setGeometry(QtCore.QRect(30, 620, 93, 28))
         self.addMP3ToPlaylistButton.setObjectName("addMP3ToPlaylistButton")
+        self.addMP3ToPlaylistButton.clicked.connect(self.addMP3Button_onClicked)
+
 
         self.removeMP3FromPlaylistButton = QtWidgets.QPushButton(self.centralwidget)
         self.removeMP3FromPlaylistButton.setGeometry(QtCore.QRect(160, 620, 93, 28))
@@ -114,7 +116,6 @@ class Ui_MainWindow(object):
         self.addMP3ToPlaylistButton.setText(_translate("MainWindow", "Add Mp3"))
         self.removeMP3FromPlaylistButton.setText(_translate("MainWindow", "Remove Mp3"))
 
-        self.addMP3ToPlaylistButton.clicked.connect(self.addMP3Button_onClicked)
 
 
     def addMP3Button_onClicked(self):
