@@ -306,10 +306,21 @@ def autoUpdateMethod(threadName, delay):
             globalComponentTimeSeeker.setValue(reqdTimeSeekerValue)
 
         except Exception as exc:
-            print("Exception raised when trying to access timeSeeker object")
-            print("Exception :"+ format(exc))
-            print("Exception reason:"+ str(sys.exc_info()[0]))            
-#        offsetValue = self.timeSeekHorizontalSlider.value()
+            # strValue = sys.exc_info[0]
+            # print("value of strValue:"+strValue)
+
+            # if(sys.exc_info[0]=='pygame.error'):
+            #     print("its a pygame error")
+
+            errorList = sys.exc_info()
+            errorString = "mixer not initialized"
+            if(errorList[1] == errorString):
+                print("Exception raised when trying to access timeSeeker object")
+                print("Exception :"+ format(exc))
+                print("Exception reason, sys.exc_info[0]:"+ str(errorList[0]))
+                print("Exception reason, sys.exc_info[1]:"+ str(errorList[1]))
+                print("Exception reason, sys.exc_info[2]:"+ str(errorList[2]))            
+    #        offsetValue = self.timeSeekHorizontalSlider.value()
             
 
 
