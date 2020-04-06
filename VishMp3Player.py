@@ -21,7 +21,7 @@ import os
 timeSeekerSliderValue = 0
 globalComponentTimeSeeker = None
 globalSoundLength = -1
-
+globalCurrentSongFilePathURL = "D:\\bumbro.mp3"
 
 
 class Ui_MainWindow(object):
@@ -63,11 +63,16 @@ class Ui_MainWindow(object):
         self.prevTrackButton.setGeometry(QtCore.QRect(20, 210, 93, 28))
         self.prevTrackButton.setObjectName("prevTrackButton")
 
+        #please note  the listwidget was initially named playlistListView and later 
+        #the listview was changed to listWidget, but the name wasnt changed. so the 
+        #named object playlistListView is not a QListView but a QListWidget
         self.playlistListView = QtWidgets.QListWidget(self.centralwidget)
         self.playlistListView.setGeometry(QtCore.QRect(20, 340, 256, 261))
         self.playlistListView.setObjectName("playlistListView")
+        self.playlistListView.clicked.connect(self.playlist_onClicked)
 
-
+        global globalCurrentSongFilePathURL
+        globalCurrentSongFilePathURL = "D:\\bumbro.mp3"
 
 
         self.addMP3ToPlaylistButton = QtWidgets.QPushButton(self.centralwidget)
@@ -137,9 +142,11 @@ class Ui_MainWindow(object):
 
         if fileName:
             print("file selected:"+fileName)
-            songName = os.path.basename(fileName)
-            self.playlistListView.addItem(songName)            
-        
+            #as of now, the path of the song is being added, because we need to access the mp3 path when QListWidget is clicked
+            #songName = os.path.basename(fileName)   #later we can change the reqd variable from fileName to songName
+            #self.playlistListView.addItem(songName)            
+            self.playlistListView.addItem(fileName)            
+                
 
     def volumeVerticalSlider_onValueChanged(self):
         offsetValue = self.volumeVerticalSlider.value()
@@ -157,6 +164,13 @@ class Ui_MainWindow(object):
     def updateTimeSeekHorizontalSliderAutomatically():
             print("updating TimeSeekHorizontalSlider automatically")
 
+    def playlist_onClicked(self):
+        print("playlist clicked")
+        print("selected item:"+str(self.playlistListView.currentItem().text()))
+        global globalCurrentSongFilePathURL
+        globalCurrentSongFilePathURL = self.playlistListView.currentItem().text()
+        print("inside method playlist_onClicked: value of globalCurrentSongFilePathURL: "+globalCurrentSongFilePathURL)
+
 
     def playButton_onClicked(self):
             print("play button clicked")
@@ -164,7 +178,11 @@ class Ui_MainWindow(object):
             try:
                 initMixer()
                 filename = 'D:\\bumbro.mp3'
-                playmusic(filename)
+                
+                #playmusic(filename)
+                global globalCurrentSongFilePathURL
+                playmusic(globalCurrentSongFilePathURL)
+                print("inside method playButton_onClicked: value of globalCurrentSongFilePathURL:"+globalCurrentSongFilePathURL)
                 self.isMusicPlaying = "True"
             except KeyboardInterrupt:   # to stop playing, press "ctrl-c"
                 print("\nPlay Stopped by user")
@@ -314,14 +332,13 @@ def autoUpdateMethod(threadName, delay):
 
             errorList = sys.exc_info()
             errorString = "mixer not initialized"
-            if(errorList[1] == errorString):
+            if(errorList[1] == errorString): # basically stopping the exception from raising when the pygame mixer module has not been initialized
                 print("Exception raised when trying to access timeSeeker object")
                 print("Exception :"+ format(exc))
                 print("Exception reason, sys.exc_info[0]:"+ str(errorList[0]))
                 print("Exception reason, sys.exc_info[1]:"+ str(errorList[1]))
                 print("Exception reason, sys.exc_info[2]:"+ str(errorList[2]))            
-    #        offsetValue = self.timeSeekHorizontalSlider.value()
-            
+
 
 
 if __name__ == "__main__":
