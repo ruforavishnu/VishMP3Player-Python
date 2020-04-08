@@ -70,7 +70,7 @@ class Ui_MainWindow(object):
         self.playlistListView.setGeometry(QtCore.QRect(20, 340, 256, 261))
         self.playlistListView.setObjectName("playlistListView")
         self.playlistListView.clicked.connect(self.playlist_onClicked)
-
+        self.playlistListView.itemDoubleClicked.connect(self.playlist_onDoubleClicked)
         global globalCurrentSongFilePathURL
         globalCurrentSongFilePathURL = "D:\\bumbro.mp3"
 
@@ -170,6 +170,14 @@ class Ui_MainWindow(object):
         global globalCurrentSongFilePathURL
         globalCurrentSongFilePathURL = self.playlistListView.currentItem().text()
         print("inside method playlist_onClicked: value of globalCurrentSongFilePathURL: "+globalCurrentSongFilePathURL)
+
+    def playlist_onDoubleClicked(self):
+        print("inside method playlist_onDoubleClicked: ")
+        global globalCurrentSongFilePathURL
+        globalCurrentSongFilePathURL = self.playlistListView.currentItem().text()
+        print("inside method playlist_onDoubleClicked: value of globalCurrentSongFilePathURL: "+globalCurrentSongFilePathURL)
+        playmusic(globalCurrentSongFilePathURL)
+        self.isMusicPlaying = "True"
 
 
     def playButton_onClicked(self):
