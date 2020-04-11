@@ -170,6 +170,8 @@ class Ui_MainWindow(object):
         global globalCurrentSongFilePathURL
         globalCurrentSongFilePathURL = self.playlistListView.currentItem().text()
         print("inside method playlist_onClicked: value of globalCurrentSongFilePathURL: "+globalCurrentSongFilePathURL)
+        self.playlistListView.setStyleSheet("background-color:yellow")
+
 
     def playlist_onDoubleClicked(self):
         print("inside method playlist_onDoubleClicked: ")
