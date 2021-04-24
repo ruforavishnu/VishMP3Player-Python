@@ -26,10 +26,15 @@ So, ended up making a basic MP3 Player.
 Functionality :
 
 *Plays MP3 (continues from where it was paused/stopped)
+
 *Stop MP3 (stops playing)
+
 *Pause MP3 ( pauses )
+
 *Increase/Decrease volume of playback
+
 *Seek to any given time using the time seeker GUI control
+
 
 
 
